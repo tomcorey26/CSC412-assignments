@@ -10,7 +10,20 @@ int isReapeat(char *str, char let) {
   return 0;
 }
 
-char *sortString(char *s) {
+char *sortByAsc(char *str) {
+  for (int i = 0; i < strlen(str); i++) {
+    for (int j = 0; j < strlen(str); j++) {
+      if (str[j] > str[i]) {
+        char temp = str[i];
+        str[i] = str[j];
+        str[j] = temp;
+      }
+    }
+  }
+  return str;
+}
+
+void sortString(char *s) {
   // stores address of malloc allocated memory (first block of memory)
   // allocate memory for sorted string +1 for the null character
   char *outStr = (char *)malloc(strlen(s) + 1);
@@ -39,24 +52,35 @@ char *sortString(char *s) {
       }
     }
   }
-  int letIdx = 0;
-  int numIdx = letCount;
-  int othIdx = letCount + numCount;
+  char *letterStr = (char *)malloc(letCount + 1);
+  char *numStr = (char *)malloc(numCount + 1);
+  char *othStr = (char *)malloc(othCount + 1);
+
   for (int i = 0; repeatStr[i] != '\0'; i++) {
     if ((repeatStr[i] >= 'a' && repeatStr[i] <= 'z') ||
         (repeatStr[i] >= 'A' && repeatStr[i] <= 'Z')) {
-      outStr[letIdx] = repeatStr[i];
-      letIdx++;
+      // add to letter string
+      letterStr[letCount - 1] = repeatStr[i];
+      letCount--;
     } else if (repeatStr[i] <= '9' && repeatStr[i] >= '0') {
-      outStr[numIdx] = repeatStr[i];
-      numIdx++;
+      // ad to num string
+      numStr[numCount - 1] = repeatStr[i];
+      numCount--;
     } else {
-      outStr[othIdx] = repeatStr[i];
-      othIdx++;
+      // add to oth string
+      othStr[othCount - 1] = repeatStr[i];
+      othCount--;
     }
   }
-  printf("\"%s\" \n", outStr);
-  return s;
+  letterStr = sortByAsc(letterStr);
+  numStr = sortByAsc(numStr);
+  othStr = sortByAsc(othStr);
+
+  // print
+  printf("\"%s", letterStr);
+  printf("%s", numStr);
+  printf("%s\"\n", othStr);
+  return;
 }
 
 int main() {
@@ -65,7 +89,7 @@ int main() {
   while (strcmp(in, "EXIT") != 0) {
     printf("enter an input string:");
     scanf(" %[^\n]", in);
-    char *s = sortString(in);
+    sortString(in);
   }
   return 0;
 }
