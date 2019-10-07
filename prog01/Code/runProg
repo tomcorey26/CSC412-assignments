@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+# error handling
+if(($# < 4))
+then
+    echo Invalid arguement list.
+    echo "Proper usage: myScript <path to executable> m1 [m2 [m3 [...]]]"
+    exit 64
+fi
+
+
+max=0
+# find largest argument
+# skip over executable arguement
+for i in "${@:2}"
+do
+
+if (($i > $max))
+then
+    max=$i
+fi
+
+done
+
+# run c program with largest arguement
+$1 $max
+
+currNumIdx=2
+numArr=("$@")
+
+# run c program for each pair
+for i in "${@:2}"
+do
+    for (( j = $currNumIdx ; j < $#; j++ ))
+    do
+        $1 $i ${numArr[$j]}
+    done
+    let currNumIdx=currNumIdx+1
+done
