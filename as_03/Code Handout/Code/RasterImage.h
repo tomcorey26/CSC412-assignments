@@ -1,13 +1,13 @@
-#ifndef	RASTER_IMAGE_H
-#define	RASTER_IMAGE_H
+#ifndef RASTER_IMAGE_H
+#define RASTER_IMAGE_H
 
 typedef enum ImageFileType
 {
-		kUnknownType = -1,
-		kTGA_COLOR,				//	24-bit color image
-		kTGA_GRAY,
-		kPPM,					//	24-bit color image
-		kPGM					//	8-bit gray-level image
+	kUnknownType = -1,
+	kTGA_COLOR, //	24-bit color image
+	kTGA_GRAY,
+	kPPM, //	24-bit color image
+	kPGM  //	8-bit gray-level image
 } ImageFileType;
 
 /**	This is the enum type that refers to images loaded in memory, whether
@@ -17,28 +17,29 @@ typedef enum ImageFileType
  */
 typedef enum ImageType
 {
-		/**	Color image with 4 bytes per pixel
+	/**	Color image with 4 bytes per pixel
 		 */
-		RGBA32_RASTER,
+	RGBA32_RASTER,
 
-		/**	Gray image with 1 byte per pixel
+	/**	Gray image with 1 byte per pixel
 		 */
-		GRAY_RASTER,
+	GRAY_RASTER,
 
-		/**	Monochrome image (either gray or one color channel of a color image)
+	/**	Monochrome image (either gray or one color channel of a color image)
 		 *	stored in a float raster
 		 */
-		FLOAT_RASTER
-			
-} ImageType;
+	FLOAT_RASTER
 
+} ImageType;
 
 /**	This is the data type that you need to fill in
  */
 typedef struct RasterImage
 {
-
-
+	unsigned int width;
+	unsigned int height;
+	unsigned char *raster;
+	unsigned char **raster2D;
 } RasterImage;
 
-#endif	//	RASTER_IMAGE_H
+#endif //	RASTER_IMAGE_H

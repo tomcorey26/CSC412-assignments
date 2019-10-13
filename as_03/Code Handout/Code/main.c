@@ -10,6 +10,12 @@
 //						University of Rhode Island
 //====================================================================================
 
+/*! \file main.c
+	\brief Main file baybee
+
+	The file given to base my code off of
+	this is a doxy gen test ayeee
+*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -31,6 +37,8 @@
 //	my program to make it possible to ever remove them all.  If you are going to use
 //	any of my code samples or handout, just get used to it.  Feel free to rename the
 //	fields to something you prefer.
+
+//! doxygen test
 typedef struct ImageInfoStruct
 {
 	unsigned char *raster;
@@ -43,7 +51,7 @@ typedef struct ImageInfoStruct
 //	Note that I completely hard-coded the file paths.  Obviously, you will
 //	have to change that in your program.
 #define IN_PATH "../Images/bottles.tga"
-#define OUT_PATH "../Output/output.tga"
+#define OUT_PATH "../Output/pls.tga"
 
 #define PIXEL_AS_4_BYTES_VERSION 1
 #define PIXEL_AS_1_INT_VERSION 2
@@ -58,6 +66,7 @@ int main(int argc, char **argv)
 	unsigned int bytesPerRow;
 
 	unsigned char *raster = readTGA(IN_PATH, &numRows, &numCols, &imgType);
+	unsigned char **raster_2D = raster2D(raster, numRows, numCols);
 
 	if (raster != NULL)
 	{
@@ -110,7 +119,10 @@ int main(int argc, char **argv)
 			//	memory as 4-bytes per pixel (because this aligns a pixel with the size of
 			//	an int.  This is where the factor 4 comes from
 			// the color channel order is red-green-blue-alpha, hence the +1
-			raster[i * bytesPerRow + 4 * j + 1] = 0x00;
+			// raster[i * bytesPerRow + 4 * j + 1] = 0x00;
+
+			// 2D array!
+			raster_2D[i][j * 4 + 1] = 0x00;
 
 #elif VERSION == PIXEL_AS_1_INT_VERSION
 
