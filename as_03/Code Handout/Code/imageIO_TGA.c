@@ -177,13 +177,6 @@ unsigned char **raster2D(unsigned char *s, unsigned int numRows, unsigned int nu
 		s2D[i] = s + 4 * i * numCols;
 	}
 
-	//	Alternatively, I could have written
-	//	s2D[0] = s;
-	//	for (unsigned int i=1; i<numRows; i++) {
-	//		//	s2D[i] points to the beginning of the i-th row.
-	//		s2D[i] = s2D[i-1] + numCols;
-	//	}
-
 	return s2D;
 }
 
