@@ -25,6 +25,8 @@
 #include <dirent.h>
 //
 #include "imageIO_TGA.h"
+#include "RasterImage.h"
+#include "helperFuncs.h"
 
 //-------------------------------------------------------------------------------------
 //	Definition of private data types
@@ -50,8 +52,8 @@ typedef struct ImageInfoStruct
 
 //	Note that I completely hard-coded the file paths.  Obviously, you will
 //	have to change that in your program.
-#define IN_PATH "../Images/clown.tga"
-#define OUT_PATH "../Output/pls.tga"
+#define IN_PATH "../Images/bottles.tga"
+#define OUT_PATH "../Output/makesure.tga"
 
 #define PIXEL_AS_4_BYTES_VERSION 1
 #define PIXEL_AS_1_INT_VERSION 2
@@ -71,7 +73,9 @@ int main(int argc, char **argv)
 	printf("Width/Cols: %d \n", numCols);
 	printf("Height/Rows: %d \n", numRows);
 
-	if (raster != NULL)
+	RasterImage rasterObj = newImage(IN_PATH);
+
+	if (rasterObj.raster != NULL)
 	{
 		switch (imgType)
 		{
@@ -125,7 +129,7 @@ int main(int argc, char **argv)
 			// raster[i * bytesPerRow + 4 * j + 1] = 0x00;
 
 			// 2D array!
-			raster_2D[i][j * 4 + 1] = 0x00;
+			rasterObj.raster2D[i][j * 4 + 1] = 0x00;
 
 #elif VERSION == PIXEL_AS_1_INT_VERSION
 
@@ -147,7 +151,7 @@ int main(int argc, char **argv)
 	}
 
 	//	And we write back the modified image into the Output folder.
-	if (writeTGA(OUT_PATH, raster, numRows, numCols))
+	if (writeTGA(OUT_PATH, rasterObj.raster, numRows, numCols))
 	{
 		printf("Writing out of the image failed.\n");
 	}
