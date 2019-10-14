@@ -38,6 +38,7 @@ typedef struct RasterImage
 {
 	unsigned int width;
 	unsigned int height;
+	ImageType type;
 	unsigned char *raster;
 	unsigned char **raster2D;
 } RasterImage;

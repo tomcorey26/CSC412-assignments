@@ -50,7 +50,7 @@ typedef struct ImageInfoStruct
 
 //	Note that I completely hard-coded the file paths.  Obviously, you will
 //	have to change that in your program.
-#define IN_PATH "../Images/bottles.tga"
+#define IN_PATH "../Images/clown.tga"
 #define OUT_PATH "../Output/pls.tga"
 
 #define PIXEL_AS_4_BYTES_VERSION 1
@@ -67,6 +67,9 @@ int main(int argc, char **argv)
 
 	unsigned char *raster = readTGA(IN_PATH, &numRows, &numCols, &imgType);
 	unsigned char **raster_2D = raster2D(raster, numRows, numCols);
+
+	printf("Width/Cols: %d \n", numCols);
+	printf("Height/Rows: %d \n", numRows);
 
 	if (raster != NULL)
 	{
