@@ -1,0 +1,5 @@
+ ./dimensions -v -h ../Images/clown.tga 
+ ./dimensions -v -h ../Images/clown.tga 
+ ./dimensions -v -h ../Images/clown.tga 
+ ./dimensions -v -h ../Images/clown.tga 
+ 

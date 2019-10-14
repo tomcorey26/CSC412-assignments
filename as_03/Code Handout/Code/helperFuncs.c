@@ -6,23 +6,58 @@
 #define LOG_PATH "log.txt"
 
 //! Builder function that creates raster image struct
-RasterImage newImage(int width, int height, ImageType type)
+RasterImage newImage(const char *filename)
 {
-    struct RasterImage raster;
+    struct RasterImage rasterObj;
 
-    raster.width = width;
-    raster.height = height;
-    raster.type = type;
+    unsigned int numRows, numCols;
+    ImageType imgType;
 
-    return raster;
+    rasterObj.raster = readTGA(filename, &numRows, &numCols, &imgType);
+    rasterObj.raster2D = raster2D(rasterObj.raster, numRows, numCols);
+    rasterObj.width = numCols;
+    rasterObj.height = numRows;
+    rasterObj.type = imgType;
+
+    return rasterObj;
 }
 
 // void freeImage(RasterImage* imagePtr) {
 
 // }
 
+int fileExists(const char *file)
+{
+    FILE *fs = fopen(file, "r");
+
+    if (fs == NULL)
+    {
+        return 0;
+    }
+
+    fclose(fs);
+
+    return 1;
+}
+//! Logs commandline args
+void logArgs(char type, char *command)
+{
+
+    FILE *fp;
+
+    fp = fopen(LOG_PATH, "a");
+
+    fprintf(fp, "%s ", command);
+
+    fclose(fp);
+
+    return;
+}
+
+//! Logs commands and errors from programs
 void logCommand(char type, char *command)
 {
+    printf("%s", command);
 
     FILE *fp;
 
@@ -43,10 +78,6 @@ void logCommand(char type, char *command)
     else if (type == 'r')
     {
         fprintf(fp, "%s", "rotate ");
-    }
-    else
-    {
-        fprintf(fp, "%s", "Unknown ");
     }
 
     fprintf(fp, "%s", command);
