@@ -71,7 +71,7 @@ int main(int argc, char **argv)
 
     if (rasterObj.raster == NULL)
     {
-        printf("Reading of image file failed.\n");
+        logCommand('c', "Reading of image file failed.\n");
         exit(-1);
     }
 
@@ -121,7 +121,7 @@ int main(int argc, char **argv)
     //	And we write back the modified image into the Output folder.
     if (writeTGA(outName, croppedRaster, croppedHeight, croppedWidth))
     {
-        printf("Writing out of the image failed.\n");
+        logCommand('c', "Writing out of the image failed.\n");
     }
 
     // Print a brief summary detailing the results

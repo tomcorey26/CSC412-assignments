@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <string.h>
 #include "imageIO_TGA.h"
 
 #define LOG_PATH "log.txt"
@@ -85,4 +85,20 @@ void logCommand(char type, char *command)
     fclose(fp);
 
     return;
+}
+
+char *getFileName(char *in)
+{
+    // get the input file name
+    strtok(in, "/");
+
+    while (in != NULL)
+    {
+        in = strtok(NULL, "/");
+        if (strstr(in, ".tga"))
+        {
+            break;
+        }
+    }
+    return in;
 }
