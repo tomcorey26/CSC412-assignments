@@ -23,6 +23,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
+#include <string.h>
 //
 #include "imageIO_TGA.h"
 #include "RasterImage.h"
@@ -42,6 +43,7 @@ int main(int argc, char **argv)
 
     //input and output paths
     char *in = argv[5];
+
     //check if this ends with a /
     char *out = argv[6];
 
@@ -54,13 +56,16 @@ int main(int argc, char **argv)
         exit(-1);
     }
 
+    //allocate memory for the cropped raster
     unsigned int imageSize = croppedWidth * croppedHeight;
     unsigned char *croppedRaster = (unsigned char *)malloc(imageSize * 4);
     unsigned char **croppedRaster2D = raster2D(croppedRaster, croppedHeight, croppedWidth);
 
+    //set markers for starting points of raster
     int rowStart = rasterObj.height - y - 1;
     int colStart = (x - 1) * 4;
 
+    //loop through crop raster and add specified pixels
     for (int i = croppedHeight - 1; i >= 0; i--)
     {
         colStart = (x - 1) * 4;
@@ -72,8 +77,33 @@ int main(int argc, char **argv)
         rowStart--;
     }
 
+    // get the input file name
+    strtok(in, "/");
+
+    while (in != NULL)
+    {
+        in = strtok(NULL, "/");
+        if (strstr(in, ".tga"))
+        {
+            break;
+        }
+    }
+
+    //seperate name from tga and add cropped
+    printf("%s \n", out);
+    char outName[50];
+    strcpy(outName, out);
+    char *name = strchr(in, '.');
+    *name = '\0';
+    in = strcat(in, " [cropped].tga");
+
+    printf("%s \n", out);
+    //append to out string
+    out = strcat(outName, in);
+    printf("%s \n", out);
+
     //	And we write back the modified image into the Output folder.
-    if (writeTGA(OUT_PATH, croppedRaster, croppedHeight, croppedWidth))
+    if (writeTGA(outName, croppedRaster, croppedHeight, croppedWidth))
     {
         printf("Writing out of the image failed.\n");
     }
