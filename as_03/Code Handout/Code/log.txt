@@ -3,4 +3,7 @@
  ./dimensions -v -h ../Images/clown.tga 
  ./dimensions -v -h ../Images/clown.tga 
  ./dimensions -v -h ../Images/clown.tga 
- 
+ ./crop 120 110 50 50 ../Images/clown.tga ../Output/ 
+ ./crop 120 110 50 50 ../Images/clown.tga ../Output/ 
+ ./dimensions fart 
+ dimensions Invalid path provided 

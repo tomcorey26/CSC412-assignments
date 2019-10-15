@@ -30,9 +30,28 @@
 #include "helperFuncs.h"
 
 #define OUT_PATH "../Output/makesure.tga"
+#define LOG_FILE_TYPE 'c'
 
 int main(int argc, char **argv)
 {
+
+    //log command
+    for (int i = 0; i < argc + 1; ++i)
+    {
+        if (i == 1)
+        {
+            logArgs(LOG_FILE_TYPE, argv[i]);
+        }
+        else if (i == argc)
+        {
+            logArgs('n', "\n");
+        }
+        else
+        {
+            logArgs('n', argv[i]);
+        }
+    }
+
     //coordinates
     unsigned int x = atoi(argv[1]);
     unsigned int y = atoi(argv[2]);
@@ -90,17 +109,14 @@ int main(int argc, char **argv)
     }
 
     //seperate name from tga and add cropped
-    printf("%s \n", out);
     char outName[50];
     strcpy(outName, out);
     char *name = strchr(in, '.');
     *name = '\0';
     in = strcat(in, " [cropped].tga");
 
-    printf("%s \n", out);
     //append to out string
     out = strcat(outName, in);
-    printf("%s \n", out);
 
     //	And we write back the modified image into the Output folder.
     if (writeTGA(outName, croppedRaster, croppedHeight, croppedWidth))
