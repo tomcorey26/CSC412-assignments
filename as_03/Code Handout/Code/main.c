@@ -70,9 +70,6 @@ int main(int argc, char **argv)
 	unsigned char *raster = readTGA(IN_PATH, &numRows, &numCols, &imgType);
 	unsigned char **raster_2D = raster2D(raster, numRows, numCols);
 
-	printf("Width/Cols: %d \n", numCols);
-	printf("Height/Rows: %d \n", numRows);
-
 	RasterImage rasterObj = newImage(IN_PATH);
 
 	if (rasterObj.raster != NULL)
