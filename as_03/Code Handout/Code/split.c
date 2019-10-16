@@ -14,6 +14,22 @@
 
 int main(int argc, char **argv)
 {
+    //log command
+    for (int i = 0; i < argc + 1; ++i)
+    {
+        if (i == 1)
+        {
+            logArgs('s', argv[i]);
+        }
+        else if (i == argc)
+        {
+            logArgs('n', "\n");
+        }
+        else
+        {
+            logArgs('n', argv[i]);
+        }
+    }
     //grab in and out paths
     char *in = argv[1];
     char *out = argv[2];

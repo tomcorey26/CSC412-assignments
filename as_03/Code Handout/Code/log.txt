@@ -8,4 +8,6 @@
  ./dimensions fart 
  dimensions Invalid path provided 
 ./crop 120 110 50 50 ../Images/clown.tga ../Output/ 
+ ./rotate rr ../Images/bottles.tga ../Output/ 
+ ./split ../Images/bottles.tga ../Output/ 
  
