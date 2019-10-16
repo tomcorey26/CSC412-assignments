@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "imageIO_TGA.h"
+#include "./ImageIO/imageIO_TGA.h"
 
 #define LOG_PATH "log.txt"
 

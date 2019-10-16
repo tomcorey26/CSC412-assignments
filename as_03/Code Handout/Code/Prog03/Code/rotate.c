@@ -8,8 +8,8 @@
 #include <string.h>
 
 //
-#include "imageIO_TGA.h"
-#include "RasterImage.h"
+#include "./ImageIO/imageIO_TGA.h"
+#include "./ImageIO/RasterImage.h"
 #include "helperFuncs.h"
 
 int main(int argc, char **argv)
@@ -133,13 +133,12 @@ int main(int argc, char **argv)
     strcpy(inCopy, in);
 
     //add appropriate endings
-    strcat(inCopy, " [cropped].tga");
+    strcat(inCopy, " [rotated].tga");
 
     //add concatanate onto out path
     char outPath[50];
     strcpy(outPath, out);
     strcat(outPath, inCopy);
-    printf("%s", outPath);
 
     // And we write back the modified image into the Output folder.
     if (rotation == dub)

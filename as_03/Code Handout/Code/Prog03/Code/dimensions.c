@@ -14,7 +14,7 @@
 #include <sys/stat.h>
 #include <dirent.h>
 //
-#include "imageIO_TGA.h"
+#include "./ImageIO/imageIO_TGA.h"
 #include "helperFuncs.h"
 
 #define IN_PATH "../Images/bottles.tga"

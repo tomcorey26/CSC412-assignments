@@ -25,8 +25,8 @@
 #include <dirent.h>
 #include <string.h>
 //
-#include "imageIO_TGA.h"
-#include "RasterImage.h"
+#include "./ImageIO/imageIO_TGA.h"
+#include "./ImageIO/RasterImage.h"
 #include "helperFuncs.h"
 
 #define OUT_PATH "../Output/makesure.tga"

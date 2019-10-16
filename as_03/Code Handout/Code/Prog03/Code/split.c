@@ -8,8 +8,8 @@
 #include <string.h>
 
 //
-#include "imageIO_TGA.h"
-#include "RasterImage.h"
+#include "./ImageIO/imageIO_TGA.h"
+#include "./ImageIO/RasterImage.h"
 #include "helperFuncs.h"
 
 int main(int argc, char **argv)
@@ -102,8 +102,6 @@ int main(int argc, char **argv)
     strcat(redOutPath, redInCopy);
     strcat(greenOutPath, greenInCopy);
     strcat(blueOutPath, blueInCopy);
-
-    printf("%s %s %s", redOutPath, blueOutPath, greenOutPath);
 
     // And we write back the modified image into the Output folder.
     if (writeTGA(redOutPath, red.raster, rasterObj.height, rasterObj.width) || writeTGA(greenOutPath, green.raster, rasterObj.height, rasterObj.width) || writeTGA(blueOutPath, blue.raster, rasterObj.height, rasterObj.width))

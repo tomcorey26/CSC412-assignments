@@ -72,8 +72,6 @@ unsigned char *readTGA(const char *fileName, unsigned int *nbRows, unsigned int 
 	FILE *tga_in;
 	ImageFileType fileType;
 
-	printf("Opening\n");
-
 	/* --- open TARGA input file ---------------------------------- */
 	tga_in = fopen(fileName, "rb");
 

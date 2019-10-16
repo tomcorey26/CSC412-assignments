@@ -1,4 +1,4 @@
-#include "imageIO_TGA.h"
+#include "./ImageIO/imageIO_TGA.h"
 
 RasterImage newImage(const char *filename);
 int fileExists(const char *file);
