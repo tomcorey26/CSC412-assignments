@@ -4,6 +4,11 @@
 #include <string.h>
 #include <sys/wait.h>
 
+/**
+ * appends slash to end of string
+ * @param s string to have slash appended to it 
+ * 
+**/
 void appendSlash(char *s)
 {
     int length = strlen(s);
@@ -14,13 +19,17 @@ void appendSlash(char *s)
 int main(int argc, char *argv[])
 {
     //grab in and out path
+
+    //! input file directory
     char *inputDirectory = argv[1];
+
+    //! output file directory
     char *outputDirectory = argv[2];
 
     //loop thru command line
     for (int i = 3; i < argc; i++)
     {
-        //arg list
+        //! holds the arguments to be executed
         char **commandArgs;
         if (!strcmp(argv[i], "split"))
         {

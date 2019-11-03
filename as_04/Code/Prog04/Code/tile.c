@@ -7,8 +7,8 @@
 #include <stdlib.h>
 #include <math.h>
 //
-#include "../Image_IO/imageIO_TGA.h"
-#include "../Image_IO/RasterImage.h"
+#include "./Image_IO/imageIO_TGA.h"
+#include "./Image_IO/RasterImage.h"
 
 //--------------------------------------------------------------
 //	Main function, expecting as arguments:

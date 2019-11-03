@@ -9,7 +9,7 @@
 #include <string.h>
 #include <stdlib.h>
 //
-#include "../Image_IO/imageIO_TGA.h"
+#include "./Image_IO/imageIO_TGA.h"
 
 #if 0
 //-------------------------------------------------------------------

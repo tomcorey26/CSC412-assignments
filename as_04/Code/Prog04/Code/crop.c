@@ -9,7 +9,7 @@
 #include <string.h>
 #include <stdlib.h>
 //
-#include "../Image_IO/imageIO_TGA.h"
+#include "./Image_IO/imageIO_TGA.h"
 
 #if 0
 //-------------------------------------------------------------------
@@ -25,10 +25,10 @@ typedef enum ErrorCode
 	NO_ERROR = 0,
 	//
 	//	1x codes:	file-related	--> not used in this program
-//	FILE_NOT_FOUND = 10,
-//	CANNOT_OPEN_FILE = 11,
-//	WRONG_FILE_TYPE = 12,
-//	CANNOT_WRITE_FILE = 13,
+	//	FILE_NOT_FOUND = 10,
+	//	CANNOT_OPEN_FILE = 11,
+	//	WRONG_FILE_TYPE = 12,
+	//	CANNOT_WRITE_FILE = 13,
 	//
 	//	2x codes:	command line argument errors
 	WRONG_NUMBER_OF_ARGUMENTS = 20,
@@ -38,9 +38,8 @@ typedef enum ErrorCode
 	INVALID_CROP_WIDTH_TYPE,
 	INVALID_CROP_HEIGHT_TYPE,
 	INVALID_CROP_SIZE
-	
-} ErrorCode;
 
+} ErrorCode;
 
 #if 0
 //-------------------------------------------------------------------
@@ -57,10 +56,10 @@ typedef enum ErrorCode
  *	@param	cropHeight		crop region's height
  *	@return		an error code (0 if no error)
  */
-int extractCropRegion(char* argv[],
+int extractCropRegion(char *argv[],
 					  unsigned int imageWidth, unsigned int imageHeight,
-					  unsigned int* cropCornerX, unsigned int* cropCornerY,
-					  unsigned int* cropWidth, unsigned int* cropHeight);
+					  unsigned int *cropCornerX, unsigned int *cropCornerY,
+					  unsigned int *cropWidth, unsigned int *cropHeight);
 
 /**	Produces a new image that is a cropped part of the input image
  *	@param	image			the image to crop
@@ -82,8 +81,7 @@ RasterImage cropImage(RasterImage *image,
  *	@param code		the code of the error to report/process
  *	@param input	the input string that caused the error (NULL otherwise)
  */
-void errorReport(ErrorCode code, char* input);
-
+void errorReport(ErrorCode code, char *input);
 
 /**	Produces a complete path to the output image file.
  *	If the input file path was ../../Images/cells.tga and the
@@ -94,7 +92,7 @@ void errorReport(ErrorCode code, char* input);
  *	@param outFolderPath	path to the output folder
  *	@return	complete path to the desired output file.
  */
-char* produceOutFilePath(char* inputImagePath, char* outFolderPath);
+char *produceOutFilePath(char *inputImagePath, char *outFolderPath);
 
 #if 0
 //-------------------------------------------------------------------
@@ -108,7 +106,7 @@ char* produceOutFilePath(char* inputImagePath, char* outFolderPath);
 //		inputImagePath outFolderPath x y width height
 //	It returns an error code (0 for no error)
 //--------------------------------------------------------------
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
 	//	We need 6 arguments: filePath outputPath cornerX cornerY croppedW croppedW
 	if (argc != 7)
@@ -116,10 +114,10 @@ int main(int argc, char* argv[])
 		printf("Proper usage: crop inputImagePath outFolderPath x y width height\n");
 		return WRONG_NUMBER_OF_ARGUMENTS;
 	}
-	
+
 	//	Just to look prettier in the code, I give meaningful names to my arguments
-	char* inputImagePath = argv[1];
-	char* outFolderPath = argv[2];
+	char *inputImagePath = argv[1];
+	char *outFolderPath = argv[2];
 
 	//	Read the image
 	RasterImage image = readTGA(inputImagePath);
@@ -128,16 +126,16 @@ int main(int argc, char* argv[])
 	unsigned int cropCornerX, cropCornerY, cropWidth, cropHeight;
 	extractCropRegion(argv, image.numCols, image.numRows,
 					  &cropCornerX, &cropCornerY, &cropWidth, &cropHeight);
-	
+
 	//	Perform the cropping
 	RasterImage croppedImage = cropImage(&image, cropCornerX, cropCornerY, cropWidth, cropHeight);
 
 	// Produce the path to the output file
-	char* outFilePath = produceOutFilePath(inputImagePath, outFolderPath);
-	
+	char *outFilePath = produceOutFilePath(inputImagePath, outFolderPath);
+
 	//	Write out the cropped image
 	int err = writeTGA(outFilePath, &croppedImage);
-	
+
 	//	Cleanup allocations.  Again, this is not really needed, since the full
 	//	partition will get cleared when the process terminates, but I like to
 	//	keep the good habit of freeing memory that I don't need anymore, and,
@@ -146,14 +144,14 @@ int main(int argc, char* argv[])
 	deleteRasterImage(&image);
 	deleteRasterImage(&croppedImage);
 	free(outFilePath);
-	
+
 	return err;
 }
 
-int extractCropRegion(char* argv[],
+int extractCropRegion(char *argv[],
 					  unsigned int imageWidth, unsigned int imageHeight,
-					  unsigned int* cropCornerX, unsigned int* cropCornerY,
-					  unsigned int* cropWidth, unsigned int* cropHeight)
+					  unsigned int *cropCornerX, unsigned int *cropCornerY,
+					  unsigned int *cropWidth, unsigned int *cropHeight)
 {
 	if (sscanf(argv[3], "%u", cropCornerX) != 1)
 		errorReport(INVALID_CROP_X_TYPE, argv[3]);
@@ -177,108 +175,104 @@ int extractCropRegion(char* argv[],
 	if ((*cropCornerX + *cropWidth > imageWidth) ||
 		(*cropCornerY + *cropHeight > imageHeight))
 		errorReport(INVALID_CROP_SIZE, NULL);
-	
+
 	//	Otherwise, all is ok, go back to crop
 	return 0;
 }
 
-RasterImage cropImage(RasterImage* imageIn,
+RasterImage cropImage(RasterImage *imageIn,
 					  unsigned int cropCornerX, unsigned int cropCornerY,
 					  unsigned int cropWidth, unsigned int cropHeight)
 {
 	RasterImage imageOut = newRasterImage(cropHeight, cropWidth, RGBA32_RASTER);
-	
+
 	//	Beware that the images are stored upside-down from the way we view them,
 	//	So I need to invert the row indices.
-	for (unsigned int i = 0; i<cropHeight; i++)
+	for (unsigned int i = 0; i < cropHeight; i++)
 	{
 		//	version using the 1D rasters
-		memcpy((unsigned char*) imageOut.raster + (imageOut.numRows - i - 1)*imageOut.bytesPerRow,
-			   (unsigned char*) imageIn->raster + (imageIn->numRows - i - cropCornerY - 1)*imageIn->bytesPerRow
-							   					+ cropCornerX * imageIn->bytesPerPixel,
-			   cropWidth*imageIn->bytesPerPixel);
+		memcpy((unsigned char *)imageOut.raster + (imageOut.numRows - i - 1) * imageOut.bytesPerRow,
+			   (unsigned char *)imageIn->raster + (imageIn->numRows - i - cropCornerY - 1) * imageIn->bytesPerRow + cropCornerX * imageIn->bytesPerPixel,
+			   cropWidth * imageIn->bytesPerPixel);
 
 		//	version using the 2D rasters
-//		memcpy(((unsigned char**) imageOut.raster2D)[imageOut.numRows - i - 1],
-//			   ((unsigned char**) imageIn->raster2D)[imageIn->numRows - i - cropCornerY - 1]
-//							   					+ cropCornerX * imageIn->bytesPerPixel,
-//			   cropWidth*imageIn->bytesPerPixel);
-		
+		//		memcpy(((unsigned char**) imageOut.raster2D)[imageOut.numRows - i - 1],
+		//			   ((unsigned char**) imageIn->raster2D)[imageIn->numRows - i - cropCornerY - 1]
+		//							   					+ cropCornerX * imageIn->bytesPerPixel,
+		//			   cropWidth*imageIn->bytesPerPixel);
 	}
 
 	return imageOut;
 }
 
-char* produceOutFilePath(char* inputImagePath, char* outFolderPath)
+char *produceOutFilePath(char *inputImagePath, char *outFolderPath)
 {
 	// Produce the name of the output file
 	//-------------------------------------
 	//	First, find the start of the input file's name.  Start from the end
 	//	and move left until we hit the first slash or the left end of the string.
 	unsigned long index = strlen(inputImagePath) - 5;
-	while ((index>=1) && (inputImagePath[index-1] != '/'))
+	while ((index >= 1) && (inputImagePath[index - 1] != '/'))
 		index--;
-	
-	//	Produce the name of the input file minus extension
-	char* inputFileRootName = (char*) malloc(strlen(inputImagePath+index) +1);
-	strcpy(inputFileRootName, inputImagePath+index);
-	//	chop off the extension by replacing the dot by '\0'
-	inputFileRootName[strlen(inputFileRootName)-4] = '\0';
 
-	char* outFilePath = (char*) malloc(strlen(outFolderPath) +
-										strlen(inputFileRootName) + strlen(" [cropped].tga") + 2);
+	//	Produce the name of the input file minus extension
+	char *inputFileRootName = (char *)malloc(strlen(inputImagePath + index) + 1);
+	strcpy(inputFileRootName, inputImagePath + index);
+	//	chop off the extension by replacing the dot by '\0'
+	inputFileRootName[strlen(inputFileRootName) - 4] = '\0';
+
+	char *outFilePath = (char *)malloc(strlen(outFolderPath) +
+									   strlen(inputFileRootName) + strlen(" [cropped].tga") + 2);
 	strcpy(outFilePath, outFolderPath);
 	//	If outFolderPath didn't end with a slash, add it
-	if (outFolderPath[strlen(outFolderPath)-1] != '/')
+	if (outFolderPath[strlen(outFolderPath) - 1] != '/')
 		strcat(outFilePath, "/");
 
 	//	Append root name to output path, add " [cropped].tga"
 	strcat(outFilePath, inputFileRootName);
 	strcat(outFilePath, " [cropped].tga");
-	
+
 	//	free heap-allocated data we don't need anymore
 	free(inputFileRootName);
-	
+
 	return outFilePath;
 }
 
-void errorReport(ErrorCode code, char* input)
+void errorReport(ErrorCode code, char *input)
 {
 	if (code != NO_ERROR)
 	{
 		switch (code)
 		{
-			case WRONG_NUMBER_OF_ARGUMENTS:
+		case WRONG_NUMBER_OF_ARGUMENTS:
 			break;
-			
-			case INVALID_CROP_X_TYPE:
-				printf("Third argument is not a positive integer: %s\n", input);
+
+		case INVALID_CROP_X_TYPE:
+			printf("Third argument is not a positive integer: %s\n", input);
 			break;
-			
-			case INVALID_CROP_Y_TYPE:
-				printf("Fourth argument is not a positive integer: %s\n", input);
+
+		case INVALID_CROP_Y_TYPE:
+			printf("Fourth argument is not a positive integer: %s\n", input);
 			break;
-			
-			case INVALID_CROP_CORNER:
-				printf("The crop region's upper-left corner must be within the image.\n");
+
+		case INVALID_CROP_CORNER:
+			printf("The crop region's upper-left corner must be within the image.\n");
 			break;
-			
-			case INVALID_CROP_WIDTH_TYPE:
-				printf("Fifth argument is not a positive integer: %s\n", input);
+
+		case INVALID_CROP_WIDTH_TYPE:
+			printf("Fifth argument is not a positive integer: %s\n", input);
 			break;
-			
-			case INVALID_CROP_HEIGHT_TYPE:
-				printf("Sixth argument is not a positive integer: %s\n", input);
+
+		case INVALID_CROP_HEIGHT_TYPE:
+			printf("Sixth argument is not a positive integer: %s\n", input);
 			break;
-			
-			case INVALID_CROP_SIZE:
+
+		case INVALID_CROP_SIZE:
 			break;
-			
-			default:
-				break;
+
+		default:
+			break;
 		}
 		exit(code);
 	}
 }
-
-
