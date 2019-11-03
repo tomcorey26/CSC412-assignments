@@ -77,4 +77,6 @@ int main(int argc, char *argv[])
     writeTGA(outFolderPath, &spriteGrid);
     deleteRasterImage(&currTile);
     deleteRasterImage(&spriteGrid);
+
+    return 0;
 }
