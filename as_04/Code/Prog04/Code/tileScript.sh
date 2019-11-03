@@ -3,10 +3,13 @@
 inPath=$1
 outPath=$2
 
-gcc tile.c ../Image_IO/RasterImage.c ../Image_IO/imageIO_TGA.c -lm -o tile
+gcc tile.c ./Image_IO/RasterImage.c ./Image_IO/imageIO_TGA.c -lm -o tile
 
 shopt -s nullglob
 fileArr=($inPath*)
+outPath="${outPath}spritesheet.tga"
+
+./tile ${fileArr[@]} $outPath
 
 
 # for i in "${fileArr[@]}"
